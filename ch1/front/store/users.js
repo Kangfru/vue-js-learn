@@ -2,30 +2,30 @@ export const state = () => ({
     me: null,
     followerList: [
         {
-            email: 'abcd@email.com',
+            id: 1,
             nickname: '짱구'
         },
         {
-            email: 'efgh@email.com',
+            id: 2,
             nickname: '철수'
         },
         {
-            email: 'ijkl@email.com',
+            id: 3,
             nickname: '맹구'
         }
     ],
     followingList: [
         {
-            email: 'abcd@naver.com',
-            nickname: '진돌이'
+            id: 1,
+            nickname: '짱구'
         },
         {
-            email: 'efgh@naver.com',
-            nickname: '갑순이'
+            id: 2,
+            nickname: '철수'
         },
         {
-            email: 'ijkl@naver.com',
-            nickname: '갑돌이'
+            id: 3,
+            nickname: '맹구'
         }
     ],
 });
@@ -38,15 +38,29 @@ export const mutations = {
     changeNickname(state, payload) {
         state.me.nickname = payload.nickname;
     },
-    removeFollow(state, payload) {
-        if (payload.followDis === 1) {
-            const index = state.followingList.findIndex(v => v.email === payload.email);
-            state.followingList.splice(index, 1);
-        } else if (payload.followDis === 2) {
-            const index = state.followerList.findIndex(v => v.email === payload.email);
-            state.followerList.splice(index, 1);
-        }
+    // removeFollow(state, payload) {
+    //     if (payload.followDis === 1) {
+    //         const index = state.followingList.findIndex(v => v.email === payload.email);
+    //         state.followingList.splice(index, 1);
+    //     } else if (payload.followDis === 2) {
+    //         const index = state.followerList.findIndex(v => v.email === payload.email);
+    //         state.followerList.splice(index, 1);
+    //     }
+    // },
+    addFollower(state, payload) {
+        state.followerList.push(payload);
     },
+    addFollowing(state, payload) {
+        state.followingList.push(payload);
+    },
+    removeFollower(state, payload) {
+        const index = state.followerList.findIndex(v => v.id === payload.id);
+        state.followerList.splice(index, 1);
+    },
+    removeFollowing(state, payload){
+        const index = state.followingList.findIndex(v => v.id === payload.id);
+        state.followingList.splice(index, 1);
+    }
 };
 
 export const actions = {
@@ -65,7 +79,19 @@ export const actions = {
     changeNickname({ commit }, payload) {
         commit('changeNickname', payload);
     },
-    removeFollow({ commit }, payload) {
-        commit('removeFollow', payload);
-    }
+    // removeFollow({ commit }, payload) {
+    //     commit('removeFollow', payload);
+    // }
+    addFollower({ commit }, payload) {
+        commit('addFollower', payload);
+    },
+    addFollowing({ commit }, payload) {
+        commit('addFollowing', payload);
+    },
+    removeFollower({ commit }, payload) {
+        commit('removeFollower', payload);
+    },
+    removeFollowing({ commit }, payload) {
+        commit('removeFollowing', payload);
+    },
 };

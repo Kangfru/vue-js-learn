@@ -1,13 +1,12 @@
 <template>
   <v-list-title>
     <ul>
-      <li>
-        <span>{{ data.nickname }}</span>
-        <v-btn
-          @click="deleteBtnClick"
-        >
-          <v-icon>mdi-minus-circle-outline</v-icon>
-        </v-btn>
+      <li
+        v-for="user in users"
+        :key="user.id"
+      >
+        <span>{{ user.nickname }}</span>
+        <v-icon @click="remove(user.id)">mdi-minus-circle-outline</v-icon>
       </li>
     </ul>
   </v-list-title>
@@ -16,23 +15,17 @@
 <script>
     export default {
       props: {
-        data: {
-          type: Object,
+        users: {
+          type: Array,
           required: true,
         },
-        followDis: {
-          type: Number,
+        remove: {
+          type: Function,
           required: true,
         }
       },
       methods: {
-        deleteBtnClick() {
-          this.$store.dispatch('users/removeFollow', {
-            email: this.data.email,
-            followDis: this.followDis,
-          });
-        }
-      }
+      },
     }
 </script>
 

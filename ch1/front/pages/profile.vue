@@ -27,13 +27,13 @@
       <v-card style="margin-bottom: 20px">
         <v-container>
           <v-subheader>팔로잉</v-subheader>
-          <follow-list v-for="following in followingList" :key="following.email" :data="following" :followDis="1"/>
+          <follow-list :users="followingList" :remove="removeFollowing"/>
         </v-container>
       </v-card>
       <v-card style="margin-bottom: 20px">
         <v-container>
           <v-subheader>팔로워</v-subheader>
-          <follow-list v-for="follower in followerList" :key="follower.email" :data="follower" :followDis="2"/>
+          <follow-list :users="followerList" :remove="removeFollower"/>
         </v-container>
       </v-card>
     </v-container>
@@ -70,12 +70,23 @@
               nickname: this.nickname,
             })
           },
+          removeFollowing(id) {
+            this.$store.dispatch('users/removeFollowing', {
+              id,
+            });
+          },
+          removeFollower(id) {
+            this.$store.dispatch('users/removeFollower', {
+              id,
+            });
+          },
         },
         head() {
             return{
                 title: '프로필',
             }
         },
+        middleware: 'authenticated',
     }
 </script>
 
