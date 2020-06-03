@@ -1,17 +1,32 @@
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+const session = require('express-session');
+const cookie = require('cookie-parser');
+const morgan = require('morgan');
 
 const db = require('./models');
+const passportConfig = require('./passport');
 const app = express();
 
 // 매번 서버 시작할 때마다 데이터 지움
 // db.sequelize.sync({ force: true });
 db.sequelize.sync();
+passportConfig();
 
+app.use(morgan('dev'));
 app.use(cors('http://localhost:3000'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookie('cookiesecret'));
+app.use(session( {
+   resave: false,
+   saveUninitialized: false,
+   secret: 'cookiesecret',
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
    res.status(200).send('Hello B');
@@ -42,6 +57,15 @@ app.post('/user', async (req, res, next) => {
       console.log(err);
       return next(err);
    };
+});
+
+const user = {
+
+};
+
+app.post('/user/login', (req, res) => {
+   req.body.email;
+   req.body.password;
 });
 
 app.listen(3085, () => {
