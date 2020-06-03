@@ -13,12 +13,17 @@
         </v-toolbar-title>
         <v-spacer />
         <v-toolbar-items>
-          <v-text-field
-            label="검색"
-            hide-details
-            prepend-icon="mdi-magnify"
-            :style="{ display: 'flex', alignItems: 'center' }"
-          />
+          <v-form @submit.prevent="onSearchHashtag">
+            <div :style="{ display: 'flex', alignItems: 'center', height: '100%' }">
+              <v-text-field
+                v-model="hashtag"
+                label="검색"
+                hide-details
+                prepend-icon="mdi-magnify"
+                :style="{ display: 'flex', alignItems: 'center' }"
+              />
+            </div>
+          </v-form>
           <v-btn
             text
             nuxt
@@ -62,13 +67,24 @@
         components: {
             LoginForm,
         },
+      data() {
+          return {
+            hashtag: '',
+          }
+        },
         computed: {
             name() {
                 return this.$store.state.posts.name;
-            }
+            },
         },
         methods: {
-        }
+          onSearchHashtag() {
+            this.$router.push({
+              path: `/hashtag/${this.hashtag}`,
+            });
+            this.hashtag='';
+          },
+        },
     }
 </script>
 

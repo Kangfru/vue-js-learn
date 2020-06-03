@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <post-form v-if="me" />
     <div>
       <post-card
         v-for="p in mainPosts"
@@ -13,13 +12,11 @@
 
 <script>
     import PostCard from "~/components/PostCard";
-    import PostForm from "~/components/PostForm";
 
     export default {
         name: "Index",
         components: {
             PostCard,
-            PostForm
         },
         fetch({store}) {
             // vuex 스토어에 비동기적으로 데이터를 넣을 때.

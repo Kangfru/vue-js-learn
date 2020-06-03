@@ -4,10 +4,10 @@
       <v-card style="margin-bottom: 20px">
         <v-container>
           <v-subheader>내 프로필</v-subheader>
-            <v-form
-              v-model="valid"
-              @submit.prevent="onChangeNickname"
-            >
+          <v-form
+            v-model="valid"
+            @submit.prevent="onChangeNickname"
+          >
             <v-text-field
               v-model="nickname"
               label="닉네임"
@@ -15,7 +15,7 @@
               required
             />
             <v-btn
-              color="blue"
+              color="white"
               type="submit"
             >
               수정
@@ -27,13 +27,35 @@
       <v-card style="margin-bottom: 20px">
         <v-container>
           <v-subheader>팔로잉</v-subheader>
-          <follow-list :users="followingList" :remove="removeFollowing"/>
+          <follow-list
+            :users="followingList"
+            :remove="removeFollowing"
+          />
+          <v-btn
+            v-if="hasMoreFollowing"
+            style="width: 100%"
+            color="blue"
+            @click="loadMoreFollowings"
+          >
+            더보기
+          </v-btn>
         </v-container>
       </v-card>
       <v-card style="margin-bottom: 20px">
         <v-container>
           <v-subheader>팔로워</v-subheader>
-          <follow-list :users="followerList" :remove="removeFollower"/>
+          <follow-list
+            :users="followerList"
+            :remove="removeFollower"
+          />
+          <v-btn
+            v-if="hasMoreFollower"
+            style="width: 100%"
+            color="blue"
+            @click="loadMoreFollowers"
+          >
+            더보기
+          </v-btn>
         </v-container>
       </v-card>
     </v-container>
@@ -46,6 +68,10 @@
     export default {
         components: {
             FollowList
+        },
+        fetch({ store }){
+          store.dispatch('users/loadFollowers')
+          store.dispatch('users/loadFollowings')
         },
         data() {
             return {
@@ -62,6 +88,12 @@
           },
           followerList() {
             return this.$store.state.users.followerList;
+          },
+          hasMoreFollowing() {
+            return this.$store.state.users.hasMoreFollowing;
+          },
+          hasMoreFollower() {
+            return this.$store.state.users.hasMoreFollower;
           },
         },
         methods: {
@@ -80,6 +112,12 @@
               id,
             });
           },
+          loadMoreFollowers() {
+            this.$store.dispatch('users/loadFollowers');
+          },
+          loadMoreFollowings() {
+            this.$store.dispatch('users/loadFollowings');
+          }
         },
         head() {
             return{
