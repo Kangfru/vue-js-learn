@@ -63,9 +63,12 @@ export const mutations = {
 
 export const actions = {
   // 비동기 작업
-    signUp({ commit, dispatch, state, rootState, getters, rootGetters }, payload) {
-        // rootState, rootGetters 는 모듈 vuex 시스템의 index state 와 getters를 가리킴
-        // Server에 회원가입 요청을 보내는 부분
+    signUp({ commit, state }, payload) {
+        this.$axios.post('http://localhost:3085/user', {
+            email: payload.email,
+            nickname: payload.nickname,
+            password: payload.password,
+        });
         commit('setMe', payload);
     },
     logIn({ commit }, payload) {
