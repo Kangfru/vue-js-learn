@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     // createdAt, updatedAt, id 등이 자동으로 생김
     User.associate = (db) => {
-
+        db.User.hasMany(db.Post);
+        db.User.hasMany(db.Comment);
     };
     return User;
 };

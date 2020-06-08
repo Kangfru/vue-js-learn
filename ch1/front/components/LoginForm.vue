@@ -74,7 +74,7 @@
                 if (this.$refs.form.validate()) {
                   this.$store.dispatch('users/logIn', {
                     email: this.email,
-                    nickname: '강프루',
+                    password: this.password
                   });
                 }
             },
