@@ -2,64 +2,58 @@
   <v-container>
     <post-form v-if="me" />
     <div>
-      <post-card
-        v-for="p in mainPosts"
-        :key="p.id"
-        :post="p"
-      />
+      <post-card v-for="p in mainPosts" :key="p.id" :post="p" />
     </div>
   </v-container>
 </template>
 
 <script>
-    import PostCard from "~/components/PostCard";
-    import PostForm from "~/components/PostForm";
+  import PostCard from '~/components/PostCard';
+  import PostForm from '~/components/PostForm';
 
-    export default {
-        name: "Index",
-        components: {
-            PostCard,
-            PostForm
-        },
-        fetch({store}) {
-            // vuex 스토어에 비동기적으로 데이터를 넣을 때.
-            store.dispatch('posts/loadPosts');
-        },
-        data() {
-            return {
-                name: 'Nuxt.js',
-            }
-        },
-        computed: {
-            me() {
-                return this.$store.state.users.me;
-            },
-            mainPosts() {
-                return this.$store.state.posts.mainPosts;
-            },
-            hasMorePost() {
-                return this.$store.state.posts.hasMorePost;
-            },
-        },
-        mounted() {
-            // window에는 created 에서 못씀 mount 된 후 쓰는게 안전
-            window.addEventListener('scroll', this.onScroll);
-        },
-        beeforeDestroy() {
-            window.removeEventListener('scroll', this.onScroll);
-        },
-        methods: {
-            onScroll() {
-                if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                    if(this.hasMorePost){
-                        this.$store.dispatch('posts/loadPosts');
-                    }
-                }
-            },
-        },
-    };
+  export default {
+    components: {
+      PostCard,
+      PostForm,
+    },
+    data() {
+      return {
+        name: 'Nuxt.js',
+      };
+    },
+    computed: {
+      me() {
+        return this.$store.state.users.me;
+      },
+      mainPosts() {
+        return this.$store.state.posts.mainPosts;
+      },
+      hasMorePost() {
+        return this.$store.state.posts.hasMorePost;
+      }
+    },
+    fetch({ store }) {
+      return store.dispatch('posts/loadPosts', { reset: true });
+    },
+    mounted() {
+      window.addEventListener('scroll', this.onScroll);
+    },
+    beforeDestroy() {
+      window.removeEventListener('scroll', this.onScroll);
+    },
+    methods: {
+      onScroll() {
+        console.log('scroll');
+        if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+          if (this.hasMorePost) {
+            this.$store.dispatch('posts/loadPosts');
+          }
+        }
+      },
+    },
+  };
 </script>
 
-<style scoped>
+<style>
 
 </style>

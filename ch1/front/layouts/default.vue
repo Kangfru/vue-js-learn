@@ -1,59 +1,36 @@
 <template>
   <v-app>
-    <!-- vuetify 부모태그 -->
     <nav>
-      <v-toolbar
-        dark
-        color="green"
-      >
+      <v-toolbar dark color="green">
         <v-toolbar-title>
-          <nuxt-link to="/">
-            NodeBird
-          </nuxt-link>
+          <nuxt-link to="/">NodeBird</nuxt-link>
         </v-toolbar-title>
         <v-spacer />
         <v-toolbar-items>
           <v-form @submit.prevent="onSearchHashtag">
-            <div :style="{ display: 'flex', alignItems: 'center', height: '100%' }">
+            <div :style="{ display: 'flex', height: '100%', alignItems: 'center' }">
               <v-text-field
                 v-model="hashtag"
                 label="검색"
                 hide-details
                 prepend-icon="mdi-magnify"
-                :style="{ display: 'flex', alignItems: 'center' }"
               />
             </div>
           </v-form>
-          <v-btn
-            text
-            nuxt
-            to="/profile"
-            :style="{ display: 'flex', alignItems: 'center' }"
-          >
+          <v-btn text nuxt to="/profile" :style="{ display: 'flex', alignItems: 'center' }">
             <div>프로필</div>
           </v-btn>
-          <v-btn
-            text
-            nuxt
-            to="/signup"
-            :style="{ display: 'flex', alignItems: 'center' }"
-          >
+          <v-btn text nuxt to="/signup" :style="{ display: 'flex', alignItems: 'center' }">
             <div>회원가입</div>
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
     </nav>
     <v-row no-gutters>
-      <v-col
-        cols="12"
-        md="4"
-      >
+      <v-col cols="12" md="4">
         <login-form />
       </v-col>
-      <v-col
-        cols="12"
-        md="8"
-      >
+      <v-col cols="12" md="8">
         <nuxt />
       </v-col>
     </v-row>
@@ -61,31 +38,26 @@
 </template>
 
 <script>
-    import LoginForm from "~/components/LoginForm";
+  import LoginForm from '~/components/LoginForm';
 
-    export default {
-        components: {
-            LoginForm,
-        },
-      data() {
-          return {
-            hashtag: '',
-          }
-        },
-        computed: {
-            name() {
-                return this.$store.state.posts.name;
-            },
-        },
-        methods: {
-          onSearchHashtag() {
-            this.$router.push({
-              path: `/hashtag/${this.hashtag}`,
-            });
-            this.hashtag='';
-          },
-        },
+  export default {
+    components: {
+      LoginForm,
+    },
+    data() {
+      return {
+        hashtag: '',
+      };
+    },
+    methods: {
+      onSearchHashtag() {
+        this.$router.push({
+          path: `/hashtag/${encodeURIComponent(this.hashtag)}`,
+        });
+        this.hashtag = '';
+      },
     }
+  };
 </script>
 
 <style scoped>

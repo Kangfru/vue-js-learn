@@ -9,45 +9,44 @@ const db = require('./models');
 const passportConfig = require('./passport');
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
+const hashtagRouter = require('./routes/hashtag');
 const app = express();
 
 db.sequelize.sync();
+// db.sequelize.sync({force: true});
 passportConfig();
 
 app.use(morgan('dev'));
 app.use(cors({
-   origin: 'http://localhost:3000',
-   credentials: true,
+  origin: 'http://localhost:3081',
+  credentials: true,
 }));
 app.use('/', express.static('uploads'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookie('cookiesecret'));
 app.use(session({
-   resave: false,
-   saveUninitialized: false,
-   secret: 'cookiesecret',
-   cookie: {
-      httpOnly: true,
-      secure: false,
-   },
+  resave: false,
+  saveUninitialized: false,
+  secret: 'cookiesecret',
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-   res.status(200).send('안녕 제로초');
+  res.status(200).send('안녕 제로초');
 });
 
 app.use('/user', userRouter);
 app.use('/post', postRouter);
-
-app.post('/post', (req, res) => {
-   if (req.isAuthenticated()) {
-
-   }
-});
+app.use('/posts', postsRouter);
+app.use('/hashtag', hashtagRouter);
 
 app.listen(3085, () => {
-   console.log(`백엔드 서버 ${3085}번 포트에서 작동중.`);
+  console.log(`백엔드 서버 ${3085}번 포트에서 작동중.`);
 });
